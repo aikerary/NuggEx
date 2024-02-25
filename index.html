@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabla de Equivalencias</title>
+<link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+<table id="equivalencias">
+  <thead>
+    <tr>
+      <th>Definicion</th>
+      <th>Equivalencia</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Aquí se insertarán las filas dinámicamente -->
+  </tbody>
+  <tfoot>
+    <tr>
+      <td><input type="text" id="nuevaDefinicion" placeholder="Nueva Definicion"></td>
+      <td><input type="text" id="nuevaEquivalencia" placeholder="Nueva Equivalencia"></td>
+      <td colspan="2"><button onclick="agregarFila()">Guardar</button></td>
+    </tr>
+  </tfoot>
+</table>
+
+<span id="minimaEquivalencia"></span>
+
+<script src="script/script.js"></script>
+</body>
+</html>
