@@ -5,10 +5,22 @@ let equivalencias = {};
 function agregarFila() {
   const nuevaDefinicion = document.getElementById("nuevaDefinicion").value;
   const nuevaEquivalencia = document.getElementById("nuevaEquivalencia").value;
-  
+  // Si el innerText de alguna de las definiciones
+  // coincide o tiene partes de alguna de las definiciones
+  // se le pide al usuario que use otro nombre
+  for (let key in equivalencias) {
+    if (nuevaDefinicion.includes(key) || key.includes(nuevaDefinicion)) {
+      alert(
+        "Por favor, use otro nombre para la definición que no contenga \
+  partes de las definiciones ya existentes"
+      );
+      return;
+    }
+  }
+
   if (nuevaDefinicion && nuevaEquivalencia) {
     equivalencias[nuevaDefinicion] = nuevaEquivalencia;
-    
+
     const tbody = document.querySelector("#equivalencias tbody");
     const newRow = document.createElement("tr");
     newRow.innerHTML = `
@@ -18,7 +30,7 @@ function agregarFila() {
       <td><button onclick="borrarFila(this)">Borrar</button></td>
     `;
     tbody.appendChild(newRow);
-    
+
     // Limpiar los campos de entrada
     document.getElementById("nuevaDefinicion").value = "";
     document.getElementById("nuevaEquivalencia").value = "";
@@ -30,11 +42,11 @@ function agregarFila() {
 function editarFila(button) {
   const fila = button.parentNode.parentNode;
   const celdas = fila.querySelectorAll("td");
-  
+
   // Convertir las celdas de texto en editables
   celdas[0].setAttribute("contenteditable", "true");
   celdas[1].setAttribute("contenteditable", "true");
-  
+
   // Cambiar el botón de editar por el botón de guardar
   button.innerText = "Guardar";
   button.setAttribute("onclick", "guardarFila(this)");
@@ -46,13 +58,26 @@ function guardarFila(button) {
   const celdas = fila.querySelectorAll("td");
   const definicion = celdas[0].innerText;
   const nuevaEquivalencia = celdas[1].innerText;
-  
+
+  // Si el innerText de alguna de las definiciones
+  // coincide o tiene partes de alguna de las definiciones
+  // se le pide al usuario que use otro nombre
+  for (let key in equivalencias) {
+    if (nuevaDefinicion.includes(key) || key.includes(nuevaDefinicion)) {
+      alert(
+        "Por favor, use otro nombre para la definición que no contenga \
+partes de las definiciones ya existentes"
+      );
+      return;
+    }
+  }
+
   equivalencias[definicion] = nuevaEquivalencia;
-  
+
   // Convertir las celdas de texto en no editables
   celdas[0].removeAttribute("contenteditable");
   celdas[1].removeAttribute("contenteditable");
-  
+
   // Cambiar el botón de guardar por el botón de editar
   button.innerText = "Editar";
   button.setAttribute("onclick", "editarFila(this)");
@@ -70,11 +95,10 @@ function borrarFila(button) {
   // Try buscarMinimaEquivalencia() here
   try {
     buscarMinimaEquivalencia();
-  }catch(e) {
+  } catch (e) {
     minimaEquivalencia.innerText = "";
   }
 }
-
 
 // Función para buscar la mínima equivalencia
 function buscarMinimaEquivalencia() {
@@ -88,18 +112,21 @@ function buscarMinimaEquivalencia() {
   const minimaEquivalencia = document.getElementById("minimaEquivalencia");
   // Set the value of the span to the value of the last cell of the last row
   minimaEquivalencia.innerText = equivalencia;
-  while (true){
+  while (true) {
     let changed = false;
-    for (let i = 0; i < rows.length - 1; i++){
+    for (let i = 0; i < rows.length - 1; i++) {
       const celdas = rows[i].querySelectorAll("td");
       const definicion = celdas[0].innerText;
       const equivalencia = celdas[1].innerText;
-      if (minimaEquivalencia.innerText.includes(definicion)){
-        minimaEquivalencia.innerText = minimaEquivalencia.innerText.replace(definicion, equivalencia);
+      if (minimaEquivalencia.innerText.includes(definicion)) {
+        minimaEquivalencia.innerText = minimaEquivalencia.innerText.replace(
+          definicion,
+          equivalencia
+        );
         changed = true;
       }
     }
-    if (!changed){
+    if (!changed) {
       break;
     }
   }
