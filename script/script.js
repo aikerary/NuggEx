@@ -1,5 +1,6 @@
 // Diccionario para almacenar las equivalencias
 let equivalencias = {};
+let definicionesTemporales = [];
 
 // Función para agregar una fila a la tabla
 function agregarFila() {
@@ -43,6 +44,9 @@ function editarFila(button) {
   const fila = button.parentNode.parentNode;
   const celdas = fila.querySelectorAll("td");
 
+  // Guardar los datos de la primera celda en 
+  // una variable temporal
+  definicionesTemporales.push(celdas[0].innerText);
   // Convertir las celdas de texto en editables
   celdas[0].setAttribute("contenteditable", "true");
   celdas[1].setAttribute("contenteditable", "true");
@@ -62,8 +66,10 @@ function guardarFila(button) {
   // Si el innerText de alguna de las definiciones
   // coincide o tiene partes de alguna de las definiciones
   // se le pide al usuario que use otro nombre
+  const condition2= !definicionesTemporales.includes(definicion);
   for (let key in equivalencias) {
-    if (nuevaDefinicion.includes(key) || key.includes(nuevaDefinicion)) {
+    let condition1= definicion.includes(key) || key.includes(definicion);
+    if (condition1 && condition2) {
       alert(
         "Por favor, use otro nombre para la definición que no contenga \
 partes de las definiciones ya existentes"
